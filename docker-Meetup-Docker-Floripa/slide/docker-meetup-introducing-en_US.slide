@@ -1,0 +1,99 @@
+Introduction to Docker
+Tags: docker
+
+Luciano Antonio Borguetti Faustino & Ricardo Longa & Tiago Katcipis
+lucianoborguetti@gmail.com
+https://github.com/NeowayLabs
+
+* Agenda
+
+- Docker
+- History
+- What is Docker?
+- Container
+- Docker Install
+- Hands On
+
+
+* Docker
+
+* History
+
+- Solomon Hykes started Docker as an internal project within dotCloud
+- Docker was released as open source in March 2013
+- As of April 13, 2015, the project had over 20,700 GitHub stars, over 4,700 forks, and nearly 900 contributors
+- A May 2015 analysis showed the following organizations as main contributors to Docker: Docker Team, Red Hat, IBM, Google, Cisco Systems, VMware, CoreOS and Amadeus
+
+
+* What is Docker?
+
+.image images/docker-logo.png 150 _
+
+- Docker is an open platform for developing, shipping, and running applications.
+- Docker does this by combining a lightweight container virtualization platform with workflows and tooling that help you manage and deploy your applications.
+- Docker provides a way to run almost any application securely isolated in a container.
+- Use of several Linux kernel features to deliver the functionality we’ve seen: Namespaces, Cgroups, Union file systems ...
+
+* Containers
+
+- Operating-system-level virtualization
+- Containerized applications share a common operating system kernel, eliminating the need for each instance to run on its own separate operating system.
+- Containers Now Offer the Same Features as VMS, but with Minimal Overhead
+- But it’s important to remember that they are not virtualization
+
+
+* How is this different from virtual machines?
+
+* Virtual Machines
+
+- Virtualization emulates the guest system, translating each and every instruction between the guest and host.
+- A hypervisor (xen, vmware, etc) manages this process
+
+.image images/what-is-docker-diagram.png _ 350
+
+* Docker Container
+
+- Linux containers, on the other hand, share the kernel and execute instructions on the host directly
+- Only allows Linux “guest” operating systems
+
+.image images/what-is-vm-diagram.png _ 450
+
+
+* Architecture
+
+.image images/docker-architecture.svg
+
+
+* Inside Docker
+
+- Docker Images
+- Docker Registry
+- Docker Containers
+- Dockerfile
+
+
+* Docker Container Lifecycle
+
+.image images/docker-lifecycle.png
+
+
+* Run only one process per container!
+
+.image images/run-only-one-process-per-container.gif 500 800
+
+
+* Only one process per container?
+
+.image images/funny-baby-cartoon.jpg
+
+.link https://docs.docker.com/articles/dockerfile_best-practices/
+
+
+* Install
+
+.image images/docker-install.jpg
+
+.link https://docs.docker.com/installation/#installation
+
+
+* Docker Hands On

@@ -1,0 +1,173 @@
+Docker Tour
+Uma introdução ao Docker
+Tags: docker
+
+Luciano Antonio Borguetti Faustino
+lucianoborguetti@gmail.com
+https://github.com/lborguetti
+@lborguetti
+
+
+* Docker
+
+
+* O que é?
+
+.image images/docker-logo.png 150 _
+
+- Virtualização em nível de sistema operacional (>= release 0.9 [[https://github.com/docker/libcontainer][*libcontainer*]]), sem carga extra de um [[http://en.wikipedia.org/wiki/Hypervisor][*hypervisor*]].
+- Isolamento entre os Containers utilizando Linux [[http://man7.org/linux/man-pages/man7/namespaces.7.html][*namespaces*]]
+- [[https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt][*Cgroups*]] para compartilhar e limitar recurso de hardware entre os Containers
+- [[http://unionfs.filesystems.org/][*UnionFS*]] para criação de [[https://docs.docker.com/terms/layer/][*layers*]], permitindo versionamento do sistema de arquivos dos Containers
+
+
+* Arquitetura
+
+.image images/docker-architecture.svg
+
+- Arquitetura Cliente / Servidor (RESTful API)
+
+
+* Docker Daemon
+
+- Docker *daemon* roda na maquina host
+- O usuário não interage diretamente com o daemon
+- É o *"servidor"* do Docker
+
+
+* Docker Client
+
+- O binário *docker* é a interface de usuário primária do Docker
+- Ele aceita comandos do usuário e se comunica com o Docker *daemon* (servidor)
+
+
+* Inside Docker
+
+
+* Docker Images
+
+- São templates somente-leitura, usados para criar *Containers*
+- Por exemplo, uma imagem contendo o sistema operacional do Ubuntu com Apache e uma aplicação Web
+- O Docker possui uma forma simplificada para criação de novas imagens, ou atualização de imagens existentes
+
+
+* Docker Registries
+
+- É um local de armazenamento, público ou privado, de onde você pode fazer download das imagens do Docker
+- O Docker registry publico é chamado de Docker HUB, com uma grande coleção de imagens para utilização
+- Você pode criar o seu Docker register, e armazenar sua imagens
+
+
+* Docker Containers
+
+- É similar a um diretório (chroot) com tudo o que você precisa para sua aplicação rodar
+- Cada Container é criado a partir de uma imagem do Docker
+- Cada Container é isolado em uma plataforma de aplicação segura
+- O Container é o *"componente"* de execução do Docker
+
+
+* Ciclo de vida de um Container
+
+.image images/docker-lifecycle.png
+
+
+* Docker Hands On
+
+
+* Instalação
+
+.image images/docker-install.jpg
+
+Recomendo a instalação da ultima versão do Docker, seguindo a documentação do projeto, que está disponível no link:
+
+.link https://docs.docker.com/installation/#installation
+
+
+* Executando um Container
+
+Para executar um Container precisamos de pelo menos uma imagem.
+
+- Localizando uma imagem
+
+    docker search centos
+
+- Obtendo uma imagem
+
+    docker pull centos
+
+- Listando as imagens
+
+    docker images
+
+- Criando um Container
+
+    docker run -t -i --rm --name centos centos /bin/bash
+
+
+* Interagindo com um Container
+
+- Listando os Containers
+
+    docker ps
+    docker ps -a
+
+- Parando um Container
+
+    docker stop centos
+
+- Iniciando um Container
+
+    docker start centos
+
+
+* Obtendo informações e logs
+
+- Inspecionando um Container
+
+    docker inspect centos
+
+- Verificando logs
+
+    docker logs centos
+
+
+* Criando uma imagem a partir de um container
+
+- Criando um container a partir da imagem do *centos* e instalando algo
+
+    docker run -t -i --name centos centos /bin/bash
+    yum -y install tcpdump
+
+- Salvando as alterações (criando a imagem)
+
+    docker commit -m "Instalando tcpdmup" -a "Luciano" centos centos-tcpdump
+
+- Listando as imagens
+
+    docker images
+
+
+* Criando uma imagem a partir de um Dockerfile
+
+- Criando um Dockerfile
+
+    touch Dockerfile
+    vim Dockerfile
+
+- Com o conteúdo:
+
+    FROM centos
+    MAINTAINER Luciano
+
+    RUN yum -y install tcpdump
+
+- Criando a imagem
+
+    docker build -t centos-tcpdump .
+
+- Listando as imagens
+
+    docker images
+
+
+* Docker Linking

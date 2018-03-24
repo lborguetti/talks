@@ -1,0 +1,77 @@
+Deploy automatizado com Docker e CoreOS na Amazon
+Tags: docker, amazon, ec2, coreos, deploy
+
+Luciano Antonio Borguetti Faustino
+lucianoborguetti@gmail.com
+https://github.com/lborguetti
+@lborguetti
+
+
+* Docker
+
+
+* O que é?
+
+.image images/docker-logo.png 150 _
+
+
+* Arquitetura
+
+.image images/docker-architecture.svg
+
+- Arquitetura Cliente / Servidor (RESTful API)
+
+
+* Docker Daemon
+
+- Docker *daemon* roda na maquina host, é o *"servidor"* do Docker
+
+
+* Inside Docker
+
+
+* Docker Images
+
+- São templates somente-leitura, usados para criação de *Containers*
+- O Docker possui uma forma simplificada (Dockerfile) para criação de novas imagens, ou atualização de imagens existentes
+- Aplicação e suas dependências
+
+
+* Docker Containers
+
+- Cada Container é criado a partir de uma imagem do Docker
+- Containers != Sistema Operacional = Um único processo
+
+
+* Docker Registries
+
+- É um local de armazenamento, público ou privado, de onde você pode fazer download das imagens do Docker
+- O Docker registry publico é chamado de Docker HUB, com uma grande coleção de imagens para utilização
+- Você pode criar o seu Docker registry, e armazenar sua imagens
+
+
+* Ciclo de vida de um Container
+
+.image images/docker-lifecycle.png
+
+
+* CoreOS
+
+- Baseado no Chrome OS
+- É um sistema operacional Linux desenvolvido para ser tolerante à falhas, distribuído e fácil de escalar
+- Não possui um sistema de pacotes como yum, apt-get, zypper, pacman, portage, etc
+- Sistema minimalista: linux kernel + systemd (system e service manager) e containers para deploy de aplicações
+- Atualização FastPatch (locksmith - reboot manager)
+- Desenvolvido com o foco para deploy em cluster
+- *"Service* *Discovery"* e *"Configuration* *Sharing"* nativo (etcd)
+- Configurações inicias através do *"Cloud-Ini"* (cloud-config)
+
+
+* Arquitetura
+
+.image images/coreos.png
+
+
+* Hands On
+
+.image images/hans-on.jpg

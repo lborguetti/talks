@@ -1,0 +1,11 @@
+[Unit]
+Description=webapp
+
+[Service]
+ExecStartPre=-/usr/bin/docker kill webapp-%i
+ExecStartPre=-/usr/bin/docker rm webapp-%i
+ExecStart=/usr/bin/docker run --rm --net=host --name webapp-%i lborguetti/docker-webapp-etcd
+ExecStop=/usr/bin/docker stop webapp-%i
+
+[X-Fleet]
+Conflicts=webapp-http@*.service

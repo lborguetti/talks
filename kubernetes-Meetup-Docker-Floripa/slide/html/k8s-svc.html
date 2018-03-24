@@ -1,0 +1,24 @@
+<html>
+<!-- HTML generated using hilite.me --><div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #cccccc">apiVersion:</span> <span style="color: #cccccc">v1</span>
+<span style="color: #cccccc">kind:</span> <span style="color: #cccccc">Service</span>
+<span style="color: #cccccc">metadata:</span>
+  <span style="color: #cccccc">labels:</span>
+    <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nginx-service</span>
+  <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nginx-service</span>
+<span style="color: #cccccc">spec:</span>
+  <span style="color: #cccccc">deprecatedPublicIPs:</span>
+    <span style="color: #cccccc">-</span> <span style="color: #cccccc">192.168.33.11</span>
+  <span style="color: #cccccc">ports:</span>
+    <span style="color: #cccccc">-</span> <span style="color: #cccccc">port:</span> <span style="color: #cccccc">80</span> <span style="color: #000080"># the port that this service should serve on</span>
+      <span style="color: #000080"># the container on each pod to connect to, can be a name</span>
+      <span style="color: #000080"># (e.g. &#39;www&#39;) or a number (e.g. 80)</span>
+      <span style="color: #cccccc">targetPort:</span> <span style="color: #cccccc">80</span>
+      <span style="color: #cccccc">protocol:</span> <span style="color: #cccccc">TCP</span>
+  <span style="color: #000080"># just like the selector in the replication controller,</span>
+  <span style="color: #000080"># but this time it identifies the set of pods to load balance</span>
+  <span style="color: #000080"># traffic to.</span>
+  <span style="color: #cccccc">selector:</span>
+    <span style="color: #cccccc">app:</span> <span style="color: #cccccc">nginx</span>
+</pre></div>
+</html>
+

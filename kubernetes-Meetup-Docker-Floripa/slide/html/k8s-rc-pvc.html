@@ -1,0 +1,29 @@
+<html>
+<!-- HTML generated using hilite.me --><div style="background: #000000; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #cccccc">apiVersion:</span> <span style="color: #cccccc">v1</span>
+<span style="color: #cccccc">kind:</span> <span style="color: #cccccc">ReplicationController</span>
+<span style="color: #cccccc">metadata:</span>
+  <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nginx</span>
+<span style="color: #cccccc">spec:</span>
+  <span style="color: #cccccc">replicas:</span> <span style="color: #cccccc">1</span>
+  <span style="color: #cccccc">selector:</span>
+    <span style="color: #cccccc">app:</span> <span style="color: #cccccc">nginx</span>
+  <span style="color: #cccccc">template:</span>
+    <span style="color: #cccccc">metadata:</span>
+      <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nginx</span>
+      <span style="color: #cccccc">labels:</span>
+        <span style="color: #cccccc">app:</span> <span style="color: #cccccc">nginx</span>
+    <span style="color: #cccccc">spec:</span>
+      <span style="color: #cccccc">containers:</span>
+      <span style="color: #cccccc">-</span> <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nginx</span>
+        <span style="color: #cccccc">image:</span> <span style="color: #cccccc">nginx</span>
+        <span style="color: #cccccc">ports:</span>
+        <span style="color: #cccccc">-</span> <span style="color: #cccccc">containerPort:</span> <span style="color: #cccccc">80</span>
+        <span style="color: #cccccc">volumeMounts:</span>
+        <span style="color: #cccccc">-</span> <span style="color: #cccccc">mountPath:</span> <span style="color: #cccccc">/data/www</span>
+          <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nfs-storage</span>
+      <span style="color: #cccccc">volumes:</span>
+      <span style="color: #cccccc">-</span> <span style="color: #cccccc">name:</span> <span style="color: #cccccc">nfs-storage</span>
+        <span style="color: #cccccc">persistentVolumeClaim:</span>
+          <span style="color: #cccccc">claimName:</span> <span style="color: #cccccc">ebs</span>
+</pre></div>
+</html>

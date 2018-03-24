@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Docker Compose vs Shell Script</title>
+    </head>
+    <body>
+        <div style="overflow-y: scroll; padding: 20px; height: 90%; width: 95%">
+        Iniciando uma serviço com uma aplicação web, e linkando com redis.
+        <ul><li>Docker Compose (YAML)</li></ul>
+<!-- HTML generated using hilite.me -->
+<div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">myapp:
+  build: .
+  links:
+    - myredis
+  volumes:
+    - .:/myapp
+  ports:
+    - <span style="color: #BB4444">&quot;5000:5000&quot;</span>
+myredis:
+  image: redis
+</pre></div>
+<!-- HTML generated using hilite.me -->
+    </div>
+    </body>
+</html>

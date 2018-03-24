@@ -1,0 +1,10 @@
+myapp:
+  build: .
+  links:
+    - myredis
+  volumes:
+    - .:/myapp
+  ports:
+    - "5000:5000"
+myredis:
+  image: redis

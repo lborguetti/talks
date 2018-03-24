@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Docker Compose vs Shell Script</title>
+    </head>
+    <body>
+        Iniciando uma serviço com uma aplicação web, e linkando com redis.
+        <ul><li>Shell Script</li></ul>
+        <div style="overflow-y: scroll; padding: 20px; height: 90%; width: 95%">
+<!-- HTML generated using hilite.me -->
+<div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-style: italic">#!/bin/bash</span>
+<span style="color: #008800; font-style: italic"># Luciano Antonio Borguetti Faustino &lt;lucianoborguetti@gmail.com&gt;</span>
+<span style="color: #008800; font-style: italic"># TDC 2015</span>
+
+<span style="color: #008800; font-style: italic"># VARS</span>
+<span style="color: #B8860B">OPT</span><span style="color: #666666">=</span><span style="color: #AA22FF; font-weight: bold">${</span><span style="color: #B8860B">1</span><span style="color: #AA22FF; font-weight: bold">}</span>
+
+<span style="color: #008800; font-style: italic"># Building myapp container image</span>
+<span style="color: #AA22FF; font-weight: bold">function </span>BuildContainers<span style="color: #666666">(){</span>
+
+    <span style="color: #008800; font-style: italic"># Build image</span>
+    docker build -t myapp .
+
+<span style="color: #666666">}</span>
+
+<span style="color: #008800; font-style: italic"># Creating and linking myapp and myredis containers</span>
+<span style="color: #AA22FF; font-weight: bold">function </span>StartContainers<span style="color: #666666">(){</span>
+
+    <span style="color: #008800; font-style: italic"># Run redis in backgroud</span>
+    docker run -d --name myredis redis
+
+    <span style="color: #008800; font-style: italic"># Run myapp container and link with myredis</span>
+    docker run --rm --name myapp --link myredis:myredis -v <span style="color: #BB4444">`</span><span style="color: #AA22FF">pwd</span><span style="color: #BB4444">`</span>:/myapp -p 5000:5000 myapp
+
+<span style="color: #666666">}</span>
+<span style="color: #666666">}</span>
+
+<span style="color: #008800; font-style: italic"># Removing myapp and myredis containers</span>
+<span style="color: #AA22FF; font-weight: bold">function </span>RemoveContainers<span style="color: #666666">(){</span>
+
+    <span style="color: #008800; font-style: italic"># Remove myapp container</span>
+    docker rm myapp
+
+    <span style="color: #008800; font-style: italic"># Remove myredis container</span>
+    docker rm myredis
+
+<span style="color: #666666">}</span>
+
+<span style="color: #008800; font-style: italic"># Remove myapp container image</span>
+<span style="color: #AA22FF; font-weight: bold">function </span>RemoveImages<span style="color: #666666">(){</span>
+
+    <span style="color: #008800; font-style: italic"># Remove myapp image</span>
+    docker rmi myapp
+
+<span style="color: #666666">}</span>
+
+<span style="color: #AA22FF; font-weight: bold">function </span>ShowHelp<span style="color: #666666">(){</span>
+
+    <span style="color: #AA22FF">echo</span> <span style="color: #BB4444">&quot;${0} [COMMAND]</span>
+
+<span style="color: #BB4444">    Commands:</span>
+<span style="color: #BB4444">    build     Build or rebuild services</span>
+<span style="color: #BB4444">    rebuild   Rebuild services</span>
+<span style="color: #BB4444">    help      Get help on a command</span>
+<span style="color: #BB4444">    rm        Remove stopped containers</span>
+<span style="color: #BB4444">    run       Run a one-off command</span>
+<span style="color: #BB4444">    start     Start services</span>
+<span style="color: #BB4444">    stop      Stop services</span>
+<span style="color: #BB4444">    restart   Restart services</span>
+<span style="color: #BB4444">    up        Create and start containers&quot;</span>
+<span style="color: #666666">}</span>
+
+<span style="color: #008800; font-style: italic"># Reading OPT and ...</span>
+<span style="color: #AA22FF; font-weight: bold">case</span> <span style="color: #AA22FF; font-weight: bold">${</span><span style="color: #B8860B">OPT</span><span style="color: #AA22FF; font-weight: bold">}</span> in
+    up<span style="color: #666666">)</span>
+        BuildContainers
+        StartContainers
+        ;;
+    start<span style="color: #666666">)</span>
+        StartContainers
+        ;;
+    stop<span style="color: #666666">)</span>
+        StopContainers
+        ;;
+    restart<span style="color: #666666">)</span>
+        StopContainers
+        StartContainers
+        ;;
+    rm<span style="color: #666666">)</span>
+        RemoveContainers
+        ;;
+    build<span style="color: #666666">)</span>
+        BuildContainers
+        ;;
+    rebuild<span style="color: #666666">)</span>
+        StopContainers
+        RemoveContainers
+        RemoveImages
+        BuildContainers
+        ;;
+    <span style="color: #AA22FF">help</span><span style="color: #666666">)</span>
+        ShowHelp
+        ;;
+    *<span style="color: #666666">)</span>
+        ShowHelp
+        ;;
+<span style="color: #AA22FF; font-weight: bold">esac</span>
+</pre></div>
+<!-- HTML generated using hilite.me -->
+        </div>
+    </body>
+</html>

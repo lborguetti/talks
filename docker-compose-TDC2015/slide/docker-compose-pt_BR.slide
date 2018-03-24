@@ -1,0 +1,190 @@
+Docker Compose
+Um novo paradigma de desenvolvimento com docker compose
+13 May 2015
+Tags: docker, docker-compose, ambiente de desenvolvimento, desenvolvimento, dev
+
+Luciano Borguetti, Tiago Katcipis
+lucianoborguetti@gmail.com / tiago.katcipis@neoway.com.br
+http://github.com/lborguetti / http://github.com/katcipis
+
+
+* Infraestrutura de desenvolvimento
+
+
+* Necessidades
+
+- Facilidade de construção de microserviços
+- Rastreabilidade
+- Facilitar execução de testes isolados e de integração
+- Execução de testes o mais próximo possível do ambiente produção
+- Independente de plataforma
+
+
+* Docker
+
+
+* O que é?
+
+.image images/TDC2015-docker-logo.png 150 _
+
+- Virtualização em nível de sistema operacional (>= release 0.9 [[https://github.com/docker/libcontainer][*libcontainer*]]), sem carga extra de um [[http://en.wikipedia.org/wiki/Hypervisor][*hypervisor*]].
+- Isolamento entre os containers utilizando Linux [[http://man7.org/linux/man-pages/man7/namespaces.7.html][*namespaces*]]
+- [[https://www.kernel.org/doc/Documentation/cgroups/cgroups.txt][*Cgroups*]] para compartilhar e limitar recurso de hardware entre os containers
+- [[http://unionfs.filesystems.org/][*UnionFS*]] para criação de [[https://docs.docker.com/terms/layer/][*layers*]], permitindo versionamento do sistema de arquivos dos containers
+
+
+* Ciclo de vida de um container
+
+.image images/TDC2015-docker-lifecycle.png
+
+
+* Docker Linking
+
+
+* O que é?
+
+- Permite que containers se conecte a outros containers.
+
+    docker run -d --name myredis redis
+    docker run --link myredis:myredis --volume `pwd`:/myapp --name myapp myapp
+
+- As informações de conectividades são expostas de duas formas:
+
+Com a atualização do */etc/hosts*
+
+    docker run ... cat /etc/hosts|grep -i myredis
+    172.17.0.69     myredis b181f946013f
+
+Através de variáveis de ambiente
+
+    docker run ... env|grep -i myredis
+    MYREDIS_PORT=tcp://172.17.0.69:6379
+    MYREDIS_PORT_6379_TCP=tcp://172.17.0.69:6379
+    MYREDIS_PORT_6379_TCP_ADDR=172.17.0.69
+    MYREDIS_PORT_6379_TCP_PORT=6379
+    MYREDIS_PORT_6379_TCP_PROTO=tcp
+    MYREDIS_NAME=/myapp/myredis
+    MYREDIS_ENV_REDIS_VERSION=3.0.0
+
+
+* Exemplo
+
+    docker run -d --name myredis redis
+    docker run --link myredis:myredis --volume `pwd`:/myapp --name myapp myapp
+
+*myapp.py*
+
+    from flask import Flask
+    from redis import Redis
+    import os
+
+    app = Flask(__name__)
+    redis = Redis(host='myredis', port=6379)
+
+    @app.route('/')
+    def hello():
+        redis.incr('hits')
+        return 'Hello World! I have been seen %s times.' % redis.get('hits')
+
+    if __name__ == "__main__":
+        app.run(host="0.0.0.0", debug=True)
+
+
+* Docker vs Necessidades
+
+- Rastreabilidade - *Ok*
+- Execução de testes o mais próximo possível do ambiente produção - *Ok*
+- Facilidade de execução de testes isolados - *Ok*
+- Facilidade de execução de testes integração - *Não*
+- Facilidade de construção de ambientes heterogêneos - *Não*
+
+
+* Docker Compose
+
+
+* O que é?
+
+- Ferramenta para a definição e execução de serviços compostos por diversos containers.
+- Possibilita expressar de forma declarativa a configuração de cada container e o relacionamento entre eles
+- Expressa em apenas um lugar como diferentes containers se compoem para fornecer um serviço.
+
+
+* Shell Script vs Docker Compose (YAML)
+
+.html html/docker-compose-shell.html
+
+
+* Shell Script vs Docker Compose (YAML)
+
+.html html/docker-compose-yaml.html
+
+
+* Caso de uso
+
+* Neobot
+
+- Serviço de web scraping
+- Basicamente uma extensão do [[http://scrapy.org/][Scrapy]]
+- Recebe jobs por meio de uma queue
+- Extrai informações da fonte e disponibiliza essas informações em uma queue de resultados
+- Resultados serão tratados por outro serviço
+- Parece simples :-)
+
+
+* Overview
+
+.image images/neobot-dev-env.png
+
+
+* Dependências
+
+- Precisamos de proxies válidos: proxyservice
+- Proxies válidos se encontram em um MongoDB, precisamos integrar com ele
+- Precisamos quebrar captchas: decaptcha
+- Comunicação com esses serviços é feita com Redis
+- API do Neobot é feita por filas, a implementação das filas usa RabbitMQ
+- Um simples testes de integração envolve ter todos esses serviços executando e se comunicando
+
+
+* Neobot: Objetivo
+
+- Executar testes de integração, porém em um ambiente isolado
+- O que seria isolamento ?
+- Execução de um teste não deve influenciar a execução de outro
+- Um desenvolvedor executando um teste não deveria interferir no trabalho de outro
+- O ideal é executar todos os serviços necessários na máquina do desenvolvedor
+
+
+* Resolvendo problema
+
+* Docker Compose File
+
+.html html/docker-compose-file.html
+
+
+* Executando o daemon com todas as dependencias
+
+.html html/docker-compose-up.html
+
+
+* Executando testes integração
+
+.html html/integration-tests.html
+
+
+* Resultado
+
+- Testes de integração envolvendo vários serviços
+- Usando as mesmas imagens que serão usadas em produção
+- Alto nível de isolamento (tudo executado localmente)
+- Quantidade de ferramentas necessárias no host: 2 (docker e docker-compose)
+
+
+* Mudança paradigma
+
+- Testes de integração podem ser executados com um nivel grande de isolamento
+- Isso já era possível antes, mas não de um jeito automatizado e simples
+- Nível de isolamento possibilita mais liberdade nos testes automatizados
+- Por exemplo, filas do rabbit sempre são zeradas em cada teste
+- Construção de ambientes de staging de maneira muito simples
+- Dependências: docker + docker compose

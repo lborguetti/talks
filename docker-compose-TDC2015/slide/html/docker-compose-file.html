@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Docker Compose File</title>
+    </head>
+    <body>
+        <div style="overflow-y: scroll; padding: 20px; height: 90%; width: 95%">
+<!-- HTML generated using hilite.me -->
+<div style="background: #f8f8f8; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">neobot:
+  command: ./hack/run.sh
+  image: neobot-dev
+  volumes:
+   - .:/neobot/dev
+  ports:
+    - <span style="color: #BB4444">&quot;6080:6080&quot;</span>
+    - <span style="color: #BB4444">&quot;6023:6023&quot;</span>
+  links:
+    - proxyserver
+    - redis
+    - rabbitmq
+    - decaptcher
+
+decaptcher:
+  image: registry.neoway.com.br/decaptcher
+  links:
+    - redis
+
+proxyserver:
+  image: registry.neoway.com.br/proxyserver
+  links:
+    - redis
+  environment:
+    MONGO_PORT: <span style="color: #BB4444">&quot;tcp://&lt;ip-address&gt;:&lt;port&gt;&quot;</span>
+    MONGO_USER: <span style="color: #BB4444">&quot;XXX&quot;</span>
+    MONGO_PASS: <span style="color: #BB4444">&quot;YYY&quot;</span>
+
+redis:
+  image: redis
+
+rabbitmq:
+  image: rabbitmq:management
+  ports:
+    - <span style="color: #BB4444">&quot;5672:5672&quot;</span>
+    - <span style="color: #BB4444">&quot;8080:15672&quot;</span>
+</pre></div>
+<!-- HTML generated using hilite.me -->
+        </div>
+    </body>
+</html>
